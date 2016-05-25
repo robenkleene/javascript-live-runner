@@ -5,6 +5,9 @@
     "type": "git",
     "url": "https://github.com/robenkleene/javascript-live-runner"
   },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.5.2"
