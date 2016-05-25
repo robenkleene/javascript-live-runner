@@ -1,0 +1,8 @@
+{
+  "name": "JavaScript Live Runner",
+  "version": "0.0.0",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/robenkleene/javascript-live-runner"
+  }
+}
