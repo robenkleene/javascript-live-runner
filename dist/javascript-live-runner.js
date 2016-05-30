@@ -25,4 +25,6 @@ var LiveRunner = function () {
   return LiveRunner;
 }();
 
-exports.default = LiveRunner;
+var liveRunner = new LiveRunner();
+exports.default = liveRunner;
+module.exports = exports["default"];
