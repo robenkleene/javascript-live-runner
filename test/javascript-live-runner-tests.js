@@ -5,7 +5,7 @@ console.log(liveRunner);
 
 describe("javascript-live-runner", function() {
   it("returns something", function() {
-    liveRunner.run("test");
+    liveRunner.read("test");
     expect(2).to.equal(2);
   });
 });

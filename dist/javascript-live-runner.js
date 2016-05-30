@@ -16,8 +16,8 @@ var LiveRunner = function () {
   }
 
   _createClass(LiveRunner, [{
-    key: "run",
-    value: function run(code) {
+    key: "read",
+    value: function read(code) {
       console.log(code);
     }
   }]);
@@ -25,6 +25,6 @@ var LiveRunner = function () {
   return LiveRunner;
 }();
 
-var liveRunner = new LiveRunner();
+var liveRunner = new LiveRunner("node");
 exports.default = liveRunner;
 module.exports = exports["default"];

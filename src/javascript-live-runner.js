@@ -3,10 +3,10 @@ class LiveRunner {
     this.program = program;
   }
   
-  run(code) {
+  read(code) {
     console.log(code);
   }
 }
 
-var liveRunner = new LiveRunner();
+var liveRunner = new LiveRunner("node");
 export { liveRunner as default };
