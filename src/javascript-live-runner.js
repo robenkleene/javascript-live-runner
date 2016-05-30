@@ -3,6 +3,7 @@ export default class LiveRunner {
     this.program = program;
   }
   
+
   run(code) {
     console.log(code);
   }
