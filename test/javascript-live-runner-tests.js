@@ -8,12 +8,16 @@ var liveRunner = require("../dist/javascript-live-runner.js");
 
 describe("javascript-live-runner", function() {
   it('return something', function(done) {
-    var code = "1 + 1";
+    this.timeout(4000);
     liveRunner.on('output', function(input, output) {
       expect(output).to.equal(2);
       expect(input).to.equal(input + "\n");
       done();
     });
+    // var code = "1 + 1";
+    // var code = "console.log('test');\n";
+    var code = "puts 'test'\n\n";
+    var code = "1 + 1";
     liveRunner.read(code);
   });
 });

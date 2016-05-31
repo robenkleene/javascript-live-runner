@@ -25,15 +25,26 @@ var LiveRunner = function (_events$EventEmitter) {
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LiveRunner).call(this));
 
     _this.input = "";
-    _this.repl = spawn(program);
+    console.log("progam = " + program);
+    _this.repl = spawn(program, ["-i"]);
+    // this.repl = spawn("which", ["ruby"]);
+    _this.repl.stdin.setEncoding('utf-8');
 
     _this.repl.stdout.on('data', function (data) {
-      _this.emit('data', _this.input, data);
+      console.log("data = " + data);
+      _this.emit('output', _this.input, data);
       _this.input = "";
     });
 
     _this.repl.stderr.on('data', function (data) {
       console.log(data);
+    });
+
+    _this.repl.on('close', function (code) {
+      console.log('child process exited with code ' + code);
+    });
+    _this.repl.on('error', function (err) {
+      console.log('Error: ' + err);
     });
     return _this;
   }
@@ -58,6 +69,8 @@ var LiveRunner = function (_events$EventEmitter) {
     key: 'readLine',
     value: function readLine(code) {
       this.input += code;
+      console.log("this.repl.stdin = " + this.repl.stdin);
+      console.log("code = " + code);
       this.repl.stdin.write(code);
     }
   }]);
@@ -66,5 +79,7 @@ var LiveRunner = function (_events$EventEmitter) {
 }(events.EventEmitter);
 
 var liveRunner = new LiveRunner("node");
+// var liveRunner = new LiveRunner("irb");
+// var liveRunner = new LiveRunner("cat");
 exports.default = liveRunner;
 module.exports = exports['default'];
