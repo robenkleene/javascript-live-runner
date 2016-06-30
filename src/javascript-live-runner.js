@@ -6,15 +6,16 @@ class LiveRunner extends events.EventEmitter {
   constructor(program) {
     super();
     this.input = "";
-    console.log("progam = " + program);
     this.repl = spawn(program, ["-i"]);
-    // this.repl = spawn("which", ["ruby"]);
     this.repl.stdin.setEncoding('utf-8');
 
     this.repl.stdout.on('data', (data) => {
-      console.log("data = " + data);
-      this.emit('output', this.input, data);
-      this.input = "";
+      // Don't pass through the prompt
+      if (data != "> ") {
+        const output = data.slice(0, -1).toString('utf8');
+        this.emit('output', this.input, output);
+        this.input = "";
+      }
     });
 
     this.repl.stderr.on('data', (data) => {
@@ -43,14 +44,10 @@ class LiveRunner extends events.EventEmitter {
   // line by line
   readLine(code) {
     this.input += code;
-    console.log("this.repl.stdin = " + this.repl.stdin);
-    console.log("code = " + code);
     this.repl.stdin.write(code);
   }
 
 }
 
 var liveRunner = new LiveRunner("node");
-// var liveRunner = new LiveRunner("irb");
-// var liveRunner = new LiveRunner("cat");
 export { liveRunner as default };
