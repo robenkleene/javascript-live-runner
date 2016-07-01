@@ -16,7 +16,6 @@ describe("javascript-live-runner", function() {
   });
   it('performs a simple calculation', function(done) {
     var code = "1 + 1";
-    this.timeout(4000);
     liveRunner.on('output', function(input, output) {
       expect(output).to.equal("2");
       expect(input).to.equal(code + "\n");
@@ -26,7 +25,6 @@ describe("javascript-live-runner", function() {
   });
   it('it only adds a line break if one isn\'t present', function(done) {
     var code = "1 + 1\n";
-    this.timeout(4000);
     liveRunner.on('output', function(input, output) {
       expect(input).to.equal(code);
       done();
