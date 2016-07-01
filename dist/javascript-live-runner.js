@@ -24,7 +24,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var LiveRunner = function (_events$EventEmitter) {
   _inherits(LiveRunner, _events$EventEmitter);
 
-  function LiveRunner(program) {
+  function LiveRunner() {
+    var program = arguments.length <= 0 || arguments[0] === undefined ? "node" : arguments[0];
+
     _classCallCheck(this, LiveRunner);
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LiveRunner).call(this));
@@ -82,6 +84,5 @@ var LiveRunner = function (_events$EventEmitter) {
   return LiveRunner;
 }(_events2.default.EventEmitter);
 
-var liveRunner = new LiveRunner("node");
-exports.default = liveRunner;
+exports.default = LiveRunner;
 module.exports = exports["default"];

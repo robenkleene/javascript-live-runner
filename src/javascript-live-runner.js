@@ -2,7 +2,7 @@ import { spawn as spawn } from "child_process";
 import events from "events";
 
 class LiveRunner extends events.EventEmitter {
-  constructor(program) {
+  constructor(program = "node") {
     super();
     this.input = "";
     this.repl = spawn(program, ["-i"]);
@@ -48,5 +48,4 @@ class LiveRunner extends events.EventEmitter {
 
 }
 
-var liveRunner = new LiveRunner("node");
-export { liveRunner as default };
+export { LiveRunner as default };
