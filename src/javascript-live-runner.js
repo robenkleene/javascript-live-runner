@@ -1,6 +1,5 @@
-// TODO: Replace these with ES6 style imports?
-var spawn = require('child_process').spawn;
-var events = require('events');
+import { spawn as spawn } from "child_process";
+import events from "events";
 
 class LiveRunner extends events.EventEmitter {
   constructor(program) {

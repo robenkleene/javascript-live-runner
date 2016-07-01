@@ -10,7 +10,7 @@ var liveRunner = require("../dist/javascript-live-runner.js");
 // to print `> ` and have it be valid output
 
 describe("javascript-live-runner", function() {
-  it('return something', function(done) {
+  it('performs a simple calculation', function(done) {
     var code = "1 + 1";
     this.timeout(4000);
     liveRunner.on('output', function(input, output) {
