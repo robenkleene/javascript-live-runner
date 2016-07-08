@@ -37,6 +37,9 @@ var LiveRunner = function (_events$EventEmitter) {
 
     _this.repl.stdout.on('data', function (data) {
       // Don't pass through the prompt
+      // This if check would seem to disallow printing the prompt, but in
+      // practice, since `console.log` always appends a new line printing
+      // the prompt passes through.
       if (data != "> ") {
         var output = data.slice(0, -1).toString('utf8');
         _this.emit('output', _this.input, output);

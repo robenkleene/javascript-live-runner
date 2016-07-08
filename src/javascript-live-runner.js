@@ -10,6 +10,9 @@ class LiveRunner extends events.EventEmitter {
 
     this.repl.stdout.on('data', (data) => {
       // Don't pass through the prompt
+      // This if check would seem to disallow printing the prompt, but in 
+      // practice, since `console.log` always appends a new line printing
+      // the prompt passes through.
       if (data != "> ") {
         const output = data.slice(0, -1).toString('utf8');
         this.emit('output', this.input, output);
