@@ -7,6 +7,8 @@ var LiveRunner = require("../dist/javascript-live-runner.js");
 // errors are just output without distinguishing characteristics from regular
 // input.
 
+// TODO: Create input that's malformed JavaScript
+
 var liveRunner = null;
 describe("javascript-live-runner", function() {
   beforeEach(function () {
