@@ -23,7 +23,7 @@ class LiveRunner extends events.EventEmitter {
     this.repl.stderr.on('data', (data) => {
       console.log(data);
     });
-    
+
     this.repl.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
     });
@@ -31,7 +31,6 @@ class LiveRunner extends events.EventEmitter {
       console.log('Error: ' + err);
     });
   }
-
 
   // Should add a line break at the end
   read(code) {
@@ -41,7 +40,7 @@ class LiveRunner extends events.EventEmitter {
     }
     this.readLine(code);
   }
-  
+
   // Should leave the code as is (not add line breaks), as if reading a file 
   // line by line
   readLine(code) {
