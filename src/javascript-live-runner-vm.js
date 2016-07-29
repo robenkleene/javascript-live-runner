@@ -1,5 +1,5 @@
-import vm from "vm";
-import events from "events";
+import vm from 'vm';
+import events from 'events';
 
 class LiveRunner extends events.EventEmitter {
 

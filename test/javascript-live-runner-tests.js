@@ -16,9 +16,11 @@ var LiveRunner = require("../dist/javascript-live-runner-vm.js");
 
 var liveRunner = null;
 describe("javascript-live-runner", function() {
+
   beforeEach(function () {
     liveRunner = new LiveRunner();
   });
+
   it('it can perform a simple calculation', function(done) {
     var code = '1 + 1';
     liveRunner.on('result', function(input, result) {
@@ -28,6 +30,16 @@ describe("javascript-live-runner", function() {
     });
     liveRunner.read(code);
   });
+
+  it('it adds a line break if one isn\'t present', function(done) {
+    var code = '1 + 1';
+    liveRunner.on('result', function(input, result) {
+      expect(input).to.equal(code + '\n');
+      done();
+    });
+    liveRunner.read(code);
+  });
+  
   it('it only adds a line break if one isn\'t present', function(done) {
     var code = "1 + 1\n";
     liveRunner.on('result', function(input, result) {
@@ -36,8 +48,9 @@ describe("javascript-live-runner", function() {
     });
     liveRunner.read(code);
   });
+
   it('it allows printing', function(done) {
-    var text = "> ";
+    var text = '> ';
     var code = 'console.log("' + text + '")';
     // var code = 'console';
     liveRunner.on('result', function(input, result, output) {
@@ -46,14 +59,16 @@ describe("javascript-live-runner", function() {
     });
     liveRunner.read(code);
   });
+
   it('it outputs undefined when defining a variable', function(done) {
-    var code = "var test = 2 + 2;";
+    var code = 'var test = 2 + 2;';
     liveRunner.on('result', function(input, result) {
       expect(result).to.equal(undefined);
       done();
     });
     liveRunner.read(code);
   });
+
   it('it calls the callback with an error', function(done) {
     var code = 'asdf';
     liveRunner.on('error', function(e) {

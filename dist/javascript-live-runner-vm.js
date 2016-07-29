@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -7,11 +7,11 @@ exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _vm = require("vm");
+var _vm = require('vm');
 
 var _vm2 = _interopRequireDefault(_vm);
 
-var _events = require("events");
+var _events = require('events');
 
 var _events2 = _interopRequireDefault(_events);
 
@@ -48,7 +48,7 @@ var LiveRunner = function (_events$EventEmitter) {
 
 
   _createClass(LiveRunner, [{
-    key: "read",
+    key: 'read',
     value: function read(code) {
       var lastChar = code.substr(code.length - 1);
       if (lastChar != "\n") {
@@ -57,7 +57,7 @@ var LiveRunner = function (_events$EventEmitter) {
       this.readLine(code);
     }
   }, {
-    key: "readLine",
+    key: 'readLine',
     value: function readLine(code) {
       this.input += code;
       try {
@@ -72,7 +72,7 @@ var LiveRunner = function (_events$EventEmitter) {
       }
     }
   }, {
-    key: "resolve",
+    key: 'resolve',
     value: function resolve() {
       try {
         var input = this.input;
@@ -88,4 +88,4 @@ var LiveRunner = function (_events$EventEmitter) {
 }(_events2.default.EventEmitter);
 
 exports.default = LiveRunner;
-module.exports = exports["default"];
+module.exports = exports['default'];
