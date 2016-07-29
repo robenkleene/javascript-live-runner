@@ -3,14 +3,18 @@ import events from "events";
 
 class LiveRunner extends events.EventEmitter {
 
-  constructor(program = "node") {
+  constructor() {
     super();
-    var sandbox = {
-      console: console
+    this.input = '';
+    this.output = '';
+    let consoleOverride = {};
+    consoleOverride.log = (value) => {
+      this.output += value; 
     };
-    this.input = "";
+    var sandbox = {
+      console: consoleOverride
+    };
     this.context = vm.createContext(sandbox);
-    // this.context = vm.createContext();
   }
 
   // Should add a line break at the end
@@ -26,9 +30,10 @@ class LiveRunner extends events.EventEmitter {
     this.input += code;
     try {
       new Function(this.input);
-      let output = vm.runInContext(code, this.context);
+      let result = vm.runInContext(code, this.context);
+      this.emit('result', this.input, result, this.output);
       this.input = '';
-      this.emit('result', this.input, output);
+      this.output = '';
     } catch (e) {
       this.emit('error', e);
       this.input = '';
