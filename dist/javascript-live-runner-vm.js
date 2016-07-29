@@ -27,18 +27,20 @@ var LiveRunner = function (_events$EventEmitter) {
   _inherits(LiveRunner, _events$EventEmitter);
 
   function LiveRunner() {
-    var program = arguments.length <= 0 || arguments[0] === undefined ? "node" : arguments[0];
-
     _classCallCheck(this, LiveRunner);
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LiveRunner).call(this));
 
-    var sandbox = {
-      console: console
+    _this.input = '';
+    _this.output = '';
+    var consoleOverride = {};
+    consoleOverride.log = function (value) {
+      _this.output += value;
     };
-    _this.input = "";
+    var sandbox = {
+      console: consoleOverride
+    };
     _this.context = _vm2.default.createContext(sandbox);
-    // this.context = vm.createContext();
     return _this;
   }
 
@@ -60,9 +62,10 @@ var LiveRunner = function (_events$EventEmitter) {
       this.input += code;
       try {
         new Function(this.input);
-        var output = _vm2.default.runInContext(code, this.context);
+        var result = _vm2.default.runInContext(code, this.context);
+        this.emit('result', this.input, result, this.output);
         this.input = '';
-        this.emit('result', this.input, output);
+        this.output = '';
       } catch (e) {
         this.emit('error', e);
         this.input = '';

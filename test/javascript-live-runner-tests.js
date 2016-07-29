@@ -36,7 +36,7 @@ describe("javascript-live-runner", function() {
     });
     liveRunner.read(code);
   });
-  it.only('it allows printing', function(done) {
+  it('it allows printing', function(done) {
     var text = "> ";
     var code = 'console.log("' + text + '")';
     // var code = 'console';
@@ -47,21 +47,21 @@ describe("javascript-live-runner", function() {
     liveRunner.read(code);
   });
   it('it outputs undefined when defining a variable', function(done) {
-    var text = "var test = 2 + 2;";
+    var code = "var test = 2 + 2;";
     liveRunner.on('result', function(input, result) {
-      expect(result).to.equal(text);
+      expect(result).to.equal(undefined);
       done();
     });
     liveRunner.read(code);
   });
   it('it calls the callback with an error', function(done) {
-    var code = "asdf";
-    liveRunner.on('result', function(input, result) {
-      console.log('result =' + result);
-      // expect(input).to.equal(code);
+    var code = 'asdf';
+    liveRunner.on('error', function(e) {
+      expect(e.name).to.equal('ReferenceError');
       done();
     });
     liveRunner.read(code);
   });
   // TODO: "it halts execution when an error is encountered."
+  // This means it doesn't try to process subsequent lines.
 });
