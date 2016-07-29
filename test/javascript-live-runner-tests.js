@@ -1,5 +1,5 @@
 var expect = require("chai").expect;
-var LiveRunner = require("../dist/javascript-live-runner-vm.js");
+var LiveRunner = require("../dist/javascript-live-runner.js");
 
 // TODO: Figure out error handling, if input generates an error, do what?
 // ideally we'd just return the error and half execution. But this is 

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -7,9 +7,11 @@ exports.default = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _child_process = require("child_process");
+var _vm = require('vm');
 
-var _events = require("events");
+var _vm2 = _interopRequireDefault(_vm);
+
+var _events = require('events');
 
 var _events2 = _interopRequireDefault(_events);
 
@@ -25,38 +27,20 @@ var LiveRunner = function (_events$EventEmitter) {
   _inherits(LiveRunner, _events$EventEmitter);
 
   function LiveRunner() {
-    var program = arguments.length <= 0 || arguments[0] === undefined ? "node" : arguments[0];
-
     _classCallCheck(this, LiveRunner);
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LiveRunner).call(this));
 
-    _this.input = "";
-    _this.repl = (0, _child_process.spawn)(program, ["-i"]);
-    _this.repl.stdin.setEncoding('utf-8');
-
-    _this.repl.stdout.on('data', function (data) {
-      // Don't pass through the prompt
-      // This if check would seem to disallow printing the prompt, but in
-      // practice, since `console.log` always appends a new line printing
-      // the prompt passes through.
-      if (data != "> ") {
-        var output = data.slice(0, -1).toString('utf8');
-        _this.emit('output', _this.input, output);
-        _this.input = "";
-      }
-    });
-
-    _this.repl.stderr.on('data', function (data) {
-      console.log(data);
-    });
-
-    _this.repl.on('close', function (code) {
-      console.log("child process exited with code " + code);
-    });
-    _this.repl.on('error', function (err) {
-      console.log('Error: ' + err);
-    });
+    _this.input = '';
+    _this.output = '';
+    var consoleOverride = {};
+    consoleOverride.log = function (value) {
+      _this.output += value;
+    };
+    var sandbox = {
+      console: consoleOverride
+    };
+    _this.context = _vm2.default.createContext(sandbox);
     return _this;
   }
 
@@ -64,7 +48,7 @@ var LiveRunner = function (_events$EventEmitter) {
 
 
   _createClass(LiveRunner, [{
-    key: "read",
+    key: 'read',
     value: function read(code) {
       var lastChar = code.substr(code.length - 1);
       if (lastChar != "\n") {
@@ -72,15 +56,31 @@ var LiveRunner = function (_events$EventEmitter) {
       }
       this.readLine(code);
     }
-
-    // Should leave the code as is (not add line breaks), as if reading a file
-    // line by line
-
   }, {
-    key: "readLine",
+    key: 'readLine',
     value: function readLine(code) {
       this.input += code;
-      this.repl.stdin.write(code);
+      try {
+        new Function(this.input);
+        var result = _vm2.default.runInContext(code, this.context);
+        this.emit('result', this.input, result, this.output);
+        this.input = '';
+        this.output = '';
+      } catch (e) {
+        this.emit('error', e);
+        this.input = '';
+      }
+    }
+  }, {
+    key: 'resolve',
+    value: function resolve() {
+      try {
+        var input = this.input;
+        this.input = "";
+        new Function(input);
+      } catch (e) {
+        this.emit('error', e);
+      }
     }
   }]);
 
@@ -88,4 +88,4 @@ var LiveRunner = function (_events$EventEmitter) {
 }(_events2.default.EventEmitter);
 
 exports.default = LiveRunner;
-module.exports = exports["default"];
+module.exports = exports['default'];
