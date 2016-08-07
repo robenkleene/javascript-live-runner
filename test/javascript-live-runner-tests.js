@@ -14,6 +14,11 @@ var LiveRunner = require("../dist/javascript-live-runner.js");
 
 // TODO: Test `resolve()` function
 
+// TODO: Figure out a solution for multiple valid statements on one line, e.g.,
+// what if a program contains the following on one line:
+// `var test = 1 + 1; test++; for (i = 0; i < 5; i++) {  test += i; } test * 2;`
+// It should probably evaluate that as one line and return one value.
+
 var liveRunner = null;
 describe("javascript-live-runner", function() {
 
@@ -77,6 +82,27 @@ describe("javascript-live-runner", function() {
     });
     liveRunner.read(code);
   });
+
+  it('it fires a callback for each valid statement', function(done) {
+    var inputs = ['var test = 1 + 1;\n',
+    'test++;\n',
+    'for (var i = 0; i < 5; i++) {\n' +
+    '  test += i;\n' +
+    '}\n',
+    'test * 2;\n'];
+    var code = inputs.join('');
+    var testResults = [undefined, 2, 13, 26];
+    liveRunner.on('result', function(input, result) {
+      var testInput = inputs.splice(0, 1)[0];
+      var testResult = testResults.splice(0, 1)[0];
+      expect(result).to.equal(testResults);
+      if (outputs.length === 0) {
+        done();
+      }
+    });
+    liveRunner.read(code);
+  });
+
   // TODO: "it halts execution when an error is encountered."
   // This means it doesn't try to process subsequent lines.
 });
