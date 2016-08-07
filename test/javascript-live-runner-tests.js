@@ -39,7 +39,7 @@ describe("javascript-live-runner", function() {
     });
     liveRunner.read(code);
   });
-  
+
   it('it only adds a line break if one isn\'t present', function(done) {
     var code = "1 + 1\n";
     liveRunner.on('result', function(input, result) {
