@@ -44,12 +44,15 @@ var LiveRunner = function (_events$EventEmitter) {
     return _this;
   }
 
-  // Should add a line break at the end
-
-
   _createClass(LiveRunner, [{
     key: 'read',
     value: function read(code) {
+      var lastChar = code.substr(code.length - 1);
+      if (lastChar == '\n') {
+        // If the last character is a new line, slice it off because it will only
+        // result in a blank line.
+        code = code.slice(0, -1);
+      }
       code.split('\n').forEach(function (line) {
         line += '\n';
         this.readLine(line);

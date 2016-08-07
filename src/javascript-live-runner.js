@@ -17,8 +17,13 @@ class LiveRunner extends events.EventEmitter {
     this.context = vm.createContext(sandbox);
   }
 
-  // Should add a line break at the end
   read(code) {
+    const lastChar = code.substr(code.length - 1);
+    if (lastChar == '\n') {
+      // If the last character is a new line, slice it off because it will only
+      // result in a blank line.
+      code = code.slice(0, -1);
+    }
     code.split('\n').forEach(function(line) {
       line += '\n';
       this.readLine(line);
