@@ -50,11 +50,10 @@ var LiveRunner = function (_events$EventEmitter) {
   _createClass(LiveRunner, [{
     key: 'read',
     value: function read(code) {
-      var lastChar = code.substr(code.length - 1);
-      if (lastChar != "\n") {
-        code += "\n";
-      }
-      this.readLine(code);
+      code.split('\n').forEach(function (line) {
+        line += '\n';
+        this.readLine(line);
+      }, this);
     }
   }, {
     key: 'readLine',

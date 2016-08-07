@@ -19,6 +19,9 @@ var LiveRunner = require("../dist/javascript-live-runner.js");
 // `var test = 1 + 1; test++; for (i = 0; i < 5; i++) {  test += i; } test * 2;`
 // It should probably evaluate that as one line and return one value.
 
+// TODO: Handle input that contains a new line character in a string, e.g.,:
+// `var test = "Hello\nWorld\n";
+
 var liveRunner = null;
 describe("javascript-live-runner", function() {
 

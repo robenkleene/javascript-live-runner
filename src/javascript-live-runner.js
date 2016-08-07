@@ -19,11 +19,10 @@ class LiveRunner extends events.EventEmitter {
 
   // Should add a line break at the end
   read(code) {
-    const lastChar = code.substr(code.length - 1);
-    if (lastChar != "\n") {
-      code += "\n";
-    }
-    this.readLine(code);
+    code.split('\n').forEach(function(line) {
+      line += '\n';
+      this.readLine(line);
+    }, this);
   }
 
   readLine(code) {
