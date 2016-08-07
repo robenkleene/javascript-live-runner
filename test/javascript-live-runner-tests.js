@@ -98,8 +98,8 @@ describe("javascript-live-runner", function() {
     liveRunner.on('result', function(input, result) {
       var testInput = inputs.splice(0, 1)[0];
       var testResult = testResults.splice(0, 1)[0];
-      expect(result).to.equal(testResults);
-      if (outputs.length === 0) {
+      expect(result).to.equal(testResult);
+      if (testResults.length === 0) {
         done();
       }
     });
