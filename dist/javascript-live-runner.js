@@ -63,14 +63,12 @@ var LiveRunner = function (_events$EventEmitter) {
     value: function readLine(code) {
       this.input += code;
       try {
-        new Function(this.input);
-        var result = _vm2.default.runInContext(code, this.context);
+        var result = _vm2.default.runInContext(this.input, this.context);
         this.emit('result', this.input, result, this.output);
         this.input = '';
         this.output = '';
       } catch (e) {
-        this.emit('error', e);
-        this.input = '';
+        // Deliberately ignored
       }
     }
   }, {
@@ -78,8 +76,8 @@ var LiveRunner = function (_events$EventEmitter) {
     value: function resolve() {
       try {
         var input = this.input;
-        this.input = "";
-        new Function(input);
+        this.input = '';
+        var result = _vm2.default.runInContext(input, this.context);
       } catch (e) {
         this.emit('error', e);
       }

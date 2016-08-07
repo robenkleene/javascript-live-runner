@@ -84,6 +84,7 @@ describe("javascript-live-runner", function() {
       done();
     });
     liveRunner.read(code);
+    liveRunner.resolve();
   });
 
   it('it fires a callback for each valid statement', function(done) {

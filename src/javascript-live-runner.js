@@ -33,22 +33,20 @@ class LiveRunner extends events.EventEmitter {
   readLine(code) {
     this.input += code;
     try {
-      new Function(this.input);
-      let result = vm.runInContext(code, this.context);
+      let result = vm.runInContext(this.input, this.context);
       this.emit('result', this.input, result, this.output);
       this.input = '';
       this.output = '';
     } catch (e) {
-      this.emit('error', e);
-      this.input = '';
+      // Deliberately ignored
     }
   }
 
   resolve() {
     try {
       let input = this.input;
-      this.input = "";
-      new Function(input);
+      this.input = '';
+      let result = vm.runInContext(input, this.context);
     } catch (e) {
       this.emit('error', e);
     }
