@@ -22,6 +22,9 @@ var LiveRunner = require("../dist/javascript-live-runner.js");
 // TODO: Handle input that contains a new line character in a string, e.g.,:
 // `var test = "Hello\nWorld\n";
 
+// TODO: "it halts execution when an error is encountered."
+// This means it doesn't try to process subsequent lines.
+
 var liveRunner = null;
 describe("javascript-live-runner", function() {
 
@@ -107,6 +110,6 @@ describe("javascript-live-runner", function() {
     liveRunner.read(code);
   });
 
-  // TODO: "it halts execution when an error is encountered."
-  // This means it doesn't try to process subsequent lines.
+  // TODO: It can import a local module
+  // TODO: It can import a core module
 });
