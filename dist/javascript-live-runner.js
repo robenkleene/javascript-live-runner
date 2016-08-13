@@ -38,6 +38,7 @@ var LiveRunner = function (_events$EventEmitter) {
       _this.output += value;
     };
     var sandbox = {
+      require: require,
       console: consoleOverride
     };
     _this.context = _vm2.default.createContext(sandbox);

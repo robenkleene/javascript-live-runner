@@ -116,7 +116,6 @@ describe("javascript-live-runner", function() {
       'assert(true);';
     var testResults = [undefined, undefined];
     liveRunner.on('result', function(input, result) {
-      var testInput = inputs.splice(0, 1)[0];
       var testResult = testResults.splice(0, 1)[0];
       expect(result).to.equal(testResult);
       if (testResults.length === 0) {

@@ -12,6 +12,7 @@ class LiveRunner extends events.EventEmitter {
       this.output += value; 
     };
     var sandbox = {
+      require: require,
       console: consoleOverride
     };
     this.context = vm.createContext(sandbox);
