@@ -1,5 +1,5 @@
-var expect = require("chai").expect;
-var LiveRunner = require("../dist/javascript-live-runner.js");
+var expect = require('chai').expect;
+var LiveRunner = require('../dist/javascript-live-runner.js');
 
 // TODO: Figure out error handling, if input generates an error, do what?
 // ideally we'd just return the error and half execution. But this is 
@@ -26,7 +26,7 @@ var LiveRunner = require("../dist/javascript-live-runner.js");
 // This means it doesn't try to process subsequent lines.
 
 var liveRunner = null;
-describe("javascript-live-runner", function() {
+describe('javascript-live-runner', function() {
 
   beforeEach(function () {
     liveRunner = new LiveRunner();
@@ -110,7 +110,6 @@ describe("javascript-live-runner", function() {
     liveRunner.read(code);
   });
 
-  // TODO: It can import a core module
   it('it can import a core module', function(done) {
     var code = 'var assert = require(\'assert\');\n' +
       'assert(true);';
@@ -125,5 +124,24 @@ describe("javascript-live-runner", function() {
     liveRunner.read(code);
   });
 
-  // TODO: It can import a local module
+  it('it can import a local module', function(done) {
+    var code = 'var expect = require(\'chai\').expect;' +
+      'expect(2).to.equal(2);';
+    var testResult = expect(2).to.equal(2);
+    var testResults = [undefined, testResult];
+    liveRunner.on('result', function(input, result) {
+console.log("result = " + result);
+      var testResult = testResults.splice(0, 1)[0];
+      expect(result).to.equal(testResult);
+      if (testResults.length === 0) {
+        done();
+      }
+    });
+    liveRunner.on('error', function(e) {
+console.log("e = " + e);
+    });
+    liveRunner.read(code);
+    liveRunner.resolve();
+  });
+
 });
