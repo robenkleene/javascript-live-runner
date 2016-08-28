@@ -130,60 +130,29 @@ describe('javascript-live-runner', function() {
   it('it can import a local module', function(done) {
     var storedDone = done;
     var code = 'var expect = require(\'chai\').expect;\n' +
-// 'console.log(expect = \'expect\');\n';
       'expect(2).to.equal(2);';
     var undefinedComparison = function(lhs) {
-      // return lhs === undefined;
-      // return lhs === undefined;
-      // return lhs === undefined;
-      expect(1).to.equal(3);
+      expect(lhs).to.equal(undefined);
     };
     var objectComparison = function(lhs) {
-      // var testResult = expect(2).to.equal(2);
-      // expect(lhs.constructor).to.equal(testResult.constructor);
-      return true;
+      var testResult = expect(2).to.equal(2);
+      expect(lhs.constructor).to.equal(testResult.constructor);
     };
     var testComparisons = [undefinedComparison, objectComparison];
-    // var testComparisons = [undefinedComparison];
     liveRunner.on('result', function(input, result) {
-try {
-console.log("input = " + input);
-      var testComparison = testComparisons.splice(0, 1)[0];
-      // var testComparisonResult = testComparison(result);
-// console.log("testComparisonResult = " + testComparisonResult);
-      testComparison(result);
-      // expect(testComparisonResult).to.equal(true);
-      // expect(false).to.equal(true);
-// console.log("result = " + result);
-// console.log("testResult = " + testResult);
-// console.log("testResult = " + JSON.stringify(testResult));
-// console.log("testResult.constructor = " + testResult.constructor);
-      // expect(result).to.equal(testResult);
-// console.log("testResults.length = " + testResults.length);
-      // console.log("got here");
-      if (testComparisons.length === 0) {
-        // console.log("Got here");
-        if (!!storedDone) {
+      try {
+        var testComparison = testComparisons.splice(0, 1)[0];
+        testComparison(result);
+        if (testComparisons.length === 0 && !!storedDone) {
           storedDone();
         }
-        // done();
-      } else {
-        console.log("Shouldn't get here twice");
       }
-}
-catch(e) {
-console.log("e = " + e);
-  console.log("got here");
-  storedDone = null;
-  done(e);
-}
-
+      catch(e) {
+        storedDone = null;
+        done(e);
+      }
     });
-    // liveRunner.on('error', function(e) {
-// console.log("e = " + e);
-    // });
     liveRunner.read(code);
-    // liveRunner.resolve();
   });
 
 });
