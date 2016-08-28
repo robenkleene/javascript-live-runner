@@ -65,8 +65,9 @@ var LiveRunner = function (_events$EventEmitter) {
       this.input += code;
       try {
         var result = _vm2.default.runInContext(this.input, this.context);
-        this.emit('result', this.input, result, this.output);
+        var input = this.input;
         this.input = '';
+        this.emit('result', input, result, this.output);
         this.output = '';
       } catch (e) {
         // Deliberately ignored

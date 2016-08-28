@@ -25,6 +25,9 @@ var LiveRunner = require('../dist/javascript-live-runner.js');
 // TODO: "it halts execution when an error is encountered."
 // This means it doesn't try to process subsequent lines.
 
+// TODO: Test that a multi-line program with line endings removed behaves as 
+// expected.
+
 var liveRunner = null;
 describe('javascript-live-runner', function() {
 
