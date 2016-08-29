@@ -38,9 +38,14 @@ describe('javascript-live-runner', function() {
   it('it can perform a simple calculation', function(done) {
     var code = '1 + 1';
     liveRunner.on('result', function(input, result) {
-      expect(result).to.equal(2);
-      expect(input).to.equal(code + "\n");
-      done();
+      try {
+        expect(result).to.equal(2);
+        expect(input).to.equal(code + "\n");
+        done();
+      }
+      catch(e) {
+        done(e);
+      }
     });
     liveRunner.read(code);
   });
@@ -48,8 +53,13 @@ describe('javascript-live-runner', function() {
   it('it adds a line break if one isn\'t present', function(done) {
     var code = '1 + 1';
     liveRunner.on('result', function(input, result) {
-      expect(input).to.equal(code + '\n');
-      done();
+      try {
+        expect(input).to.equal(code + '\n');
+        done();
+      }
+      catch(e) {
+        done(e);
+      }
     });
     liveRunner.read(code);
   });
@@ -57,8 +67,13 @@ describe('javascript-live-runner', function() {
   it('it only adds a line break if one isn\'t present', function(done) {
     var code = "1 + 1\n";
     liveRunner.on('result', function(input, result) {
-      expect(input).to.equal(code);
-      done();
+      try {
+        expect(input).to.equal(code);
+        done();
+      }
+      catch(e) {
+        done(e);
+      }
     });
     liveRunner.read(code);
   });
@@ -66,10 +81,14 @@ describe('javascript-live-runner', function() {
   it('it allows printing', function(done) {
     var text = '> ';
     var code = 'console.log("' + text + '")';
-    // var code = 'console';
     liveRunner.on('result', function(input, result, output) {
-      expect(output).to.equal(text);
-      done();
+      try {
+        expect(output).to.equal(text);
+        done();
+      }
+      catch(e) {
+        done(e);
+      }
     });
     liveRunner.read(code);
   });
@@ -77,17 +96,27 @@ describe('javascript-live-runner', function() {
   it('it outputs undefined when defining a variable', function(done) {
     var code = 'var test = 2 + 2;';
     liveRunner.on('result', function(input, result) {
-      expect(result).to.equal(undefined);
-      done();
+      try {
+        expect(result).to.equal(undefined);
+        done();
+      }
+      catch(e) {
+        done(e);
+      }
     });
     liveRunner.read(code);
   });
 
   it('it calls the callback with an error', function(done) {
     var code = 'asdf';
-    liveRunner.on('error', function(e) {
-      expect(e.name).to.equal('ReferenceError');
-      done();
+    liveRunner.on('error', function(error) {
+      try {
+        expect(error.name).to.equal('ReferenceError');
+        done();
+      }
+      catch(e) {
+        done(e);
+      }
     });
     liveRunner.read(code);
     liveRunner.resolve();
@@ -103,11 +132,17 @@ describe('javascript-live-runner', function() {
     var code = inputs.join('');
     var testResults = [undefined, 2, 13, 26];
     liveRunner.on('result', function(input, result) {
-      var testInput = inputs.splice(0, 1)[0];
-      var testResult = testResults.splice(0, 1)[0];
-      expect(result).to.equal(testResult);
-      if (testResults.length === 0) {
-        done();
+      try {
+        var testInput = inputs.splice(0, 1)[0];
+        var testResult = testResults.splice(0, 1)[0];
+        expect(result).to.equal(testResult);
+        if (testResults.length === 0 && !!done) {
+          done();
+        }
+      }
+      catch(e) {
+        done(e);
+        done = null;
       }
     });
     liveRunner.read(code);
@@ -118,17 +153,22 @@ describe('javascript-live-runner', function() {
       'assert(true);';
     var testResults = [undefined, undefined];
     liveRunner.on('result', function(input, result) {
-      var testResult = testResults.splice(0, 1)[0];
-      expect(result).to.equal(testResult);
-      if (testResults.length === 0) {
-        done();
+      try {
+        var testResult = testResults.splice(0, 1)[0];
+        expect(result).to.equal(testResult);
+        if (testResults.length === 0) {
+          done();
+        }
+      }
+      catch(e) {
+        done(e);
+        done = null;
       }
     });
     liveRunner.read(code);
   });
 
   it('it can import a local module', function(done) {
-    var storedDone = done;
     var code = 'var expect = require(\'chai\').expect;\n' +
       'expect(2).to.equal(2);';
     var undefinedComparison = function(lhs) {
@@ -143,13 +183,13 @@ describe('javascript-live-runner', function() {
       try {
         var testComparison = testComparisons.splice(0, 1)[0];
         testComparison(result);
-        if (testComparisons.length === 0 && !!storedDone) {
-          storedDone();
+        if (testComparisons.length === 0 && !!done) {
+          done();
         }
       }
       catch(e) {
-        storedDone = null;
         done(e);
+        done = null;
       }
     });
     liveRunner.read(code);
